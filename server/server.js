@@ -7,14 +7,14 @@ const db = require('./config/connection');
 
 // imports schemas to server for GraphQL to read
 const { typeDefs, resolvers } = require('./schemas');
-// const { authMiddleware } = require('./utils/auth');
+const { authMiddleware } = require('./utils/auth');
 
 // sets port and Apollo server, then runs Express
 const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  // context: authMiddleware
+  context: authMiddleware
 });
 const app = express();
 
