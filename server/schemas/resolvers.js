@@ -16,7 +16,7 @@ const resolvers = {
     },
     // modify database information
     Mutation: {
-        addUser: async (parent, {username, email, password}) => {
+        addUser: async (parent, { username, email, password }) => {
             const newUser = await User.create({username, email, password});
             const token = signToken(newUser);
             return { token, newUser };
@@ -28,6 +28,46 @@ const resolvers = {
                 throw new AuthenticationError('No user found with these credentials. Please try again')
             }
             const correctPw = await user.isCorrectPassword(password);
+            if (!correctPw) {
+                throw new AuthenticationError('Incorrect credentials. Please try again.');
+            }
+            const token = signToken(user);
+            return { token, user };
+        },
+        addBook: async (parent, { authors, description, bookId, image, link, title }, context) => {
+            if (context.user) {
+                return User.findOneAndUpdate(
+                    {_id: context.user._id},
+                    {
+                        $addToSet: {
+                            savedBooks: { authors, description, bookId, image, link, title } // need to refactor this line
+                        }
+                    },
+                    {
+                      new: true,
+                      runValidators: true,
+                    }
+                );
+            }
+            throw new AuthenticationError('You need to be logged in!');
+        },
+        removeBook: async (parent, { userId, bookId }, context) => {
+            if (context.user) {
+                return User.findOneAndUpdate(
+                    {_id: context.user._id},
+                    {
+                        $pull: {
+                            savedBooks: {
+                                _id: bookId
+                            }
+                        }
+                    },
+                    { new: true }
+                );
+            }
+            throw new AuthenticationError('You need to be logged in!');
         }
     }
 }
+
+module.exports = resolvers;
