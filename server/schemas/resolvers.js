@@ -58,7 +58,7 @@ const resolvers = {
                     {
                         $pull: {
                             savedBooks: {
-                                _id: bookId
+                                bookId: bookId
                             }
                         }
                     },
