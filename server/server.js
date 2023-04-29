@@ -3,7 +3,6 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
 const db = require('./config/connection');
-// const routes = require('./routes');
 
 // imports schemas to server for GraphQL to read
 const { typeDefs, resolvers } = require('./schemas');
@@ -21,7 +20,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// if we're in production, serve client/build as static assets
+// if in production, serves client/build as static assets
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
@@ -30,25 +29,18 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
-// app.use(routes);
-
-// db.once('open', () => {
-//   app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
-// });
-
-
-// Create a new instance of an Apollo server with the GraphQL schema
+// creates new instance of Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await server.start();
   server.applyMiddleware({ app });
-  
+
   db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
     })
   })
-  };
-  
-// Call the async function to start the server
-  startApolloServer();
+};
+
+// calls async function to start server
+startApolloServer();

@@ -40,7 +40,7 @@ const resolvers = {
                     {_id: context.user._id},
                     {
                         $addToSet: {
-                            savedBooks: { authors, description, bookId, image, link, title } // need to refactor this line
+                            savedBooks: { authors, description, bookId, image, link, title }
                         }
                     },
                     {
