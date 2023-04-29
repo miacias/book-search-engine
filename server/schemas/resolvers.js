@@ -7,11 +7,11 @@ const resolvers = {
     Query: {
         // shows all users with attached books schema
         users: async () => {
-            return User.find()/*.populate('books');*/
+            return User.find();
         },
         // shows specific user with attached books schema
         user: async (parent, { username }) => {
-            return User.findOne({ username })/*.populate('books');*/
+            return User.findOne({ username });
         }
     },
     // modify database information
