@@ -17,8 +17,13 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_BOOK = gql`
-    mutation addBook($id: ID!, $title: String!, $description: String!, $bookId: String!) {
-        addBook(_id: $id, title: $title, description: $description, bookId: $bookId) {
+    # mutation addBook($id: ID!, $authors: [String!], $description: String!, $bookId: String!,  $image: String, $link: String, $title: String!) {
+         # addBook(_id: $id, authors: [$authors], description: $description, bookId: $bookId, image: $image, link: $link, title: $title) {
+          # _id
+        # }
+      # }
+      mutation addBook($id: ID!, $description: String!, $bookId: String!, $title: String!, $authors: [String!], $image: String, $link: String) {
+        addBook(_id: $id, description: $description, bookId: $bookId, title: $title, authors: $authors, image: $image, link: $link) {
           _id
         }
       }
