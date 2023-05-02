@@ -12,6 +12,12 @@ const resolvers = {
         // shows specific user with attached books schema
         user: async (parent, { username }) => {
             return User.findOne({ username });
+        },
+        me: async (parent, args, context) => {
+            if (context.user) {
+                return User.findOne({ _id: context.user._id} );
+            }
+            throw new AuthenticationError('Please log in to do this.');
         }
     },
     // modify database information
